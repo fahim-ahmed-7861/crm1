@@ -20,12 +20,10 @@ def home(request):
 
         'orders': orders,
         'customers': customers,
-        'total_customers' : total_customers,
-        'total_orders' : total_orders,
-        'delivered' : delivered,
-        'pending' : pending
-
-
+        'total_customers': total_customers,
+        'total_orders': total_orders,
+        'delivered': delivered,
+        'pending': pending
 
     }
     return render(request, 'accounts/dashboard.html', context=context)
@@ -37,5 +35,15 @@ def products(request):
     return render(request, 'accounts/products.html', {'products': products})
 
 
-def customer(request):
-    return render(request, 'accounts/customer.html')
+def customer(request, pk_test):
+    customer = Customer.objects.get(id=pk_test)
+
+    orders = customer.order_set.all()
+    order_count = orders.count()
+
+    context = {
+        'customer': customer,
+        'orders': orders,
+        'order_count' : order_count
+    }
+    return render(request, 'accounts/customer.html', context=context)
